@@ -2,8 +2,8 @@ import express from "express";
 import morgan from "morgan";
 import mongoose from "mongoose";
 import cors from "cors";
-import therapistRoute from "../routers/therapistRoute"
-import swaggerDocumention from "../happer/documentations"
+import therapistRoute from "./routers/therapistRoute"
+import swaggerDocumention from "./happer/documentations"
 const app = express();
 
 app.use(cors({ origin: "*" }));
