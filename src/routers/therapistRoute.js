@@ -25,8 +25,7 @@ router.post("/register", upload.fields([{ name: 'profile_picture', maxCount: 1 }
         let result1
         const result = await cloudinary.uploader.upload(req.files.profile_picture[0].path)
         await cloudinary.uploader.upload(req.files.Degree[0].path, { resource_type: 'raw' }).then((res) => { result1= res }).catch((err) => { console.log(err); })
-        console.log(result)
-        console.log(result1)
+        
         const salt = await bcrypt.genSalt(10);
         const hashedPass = await bcrypt.hash(req.body.password, salt)
 
@@ -56,19 +55,14 @@ router.post("/register", upload.fields([{ name: 'profile_picture', maxCount: 1 }
             })
         }
         else {
-            console.log("heeyyyyyyyyyyyy")
+           
             const therapist = await newTherapist.save();
             return res.status(200).json(therapist);
         }
     } catch (error) {
         return res.status(400).json(error)
     }
-
-
-
-    //     } catch (err) {
-    //         return res.status(500).json(err)
-    //     }
 });
 
+// router.patch("/role/:id",)
 export default router;
