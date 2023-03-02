@@ -7,12 +7,10 @@ dotenv.config();
 const { PORT, MONGODB_URL } = process.env;
 console.log(process.env.PORT);
 const server = app.listen(PORT, () => {
-  mongoose.set("strictQuery", false);
+  // mongoose.set("strictQuery", false);
+  mongoose.set('strictQuery', true);
   mongoose
-    .connect(MONGODB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
+    .connect(MONGODB_URL)
     .then(() => {
       console.log("connected to mongodb");
       console.info("you server is running well pn port: ", PORT);
@@ -21,5 +19,6 @@ const server = app.listen(PORT, () => {
       console.log(err);
     });
 });
+
 
 export default server;
