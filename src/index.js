@@ -3,8 +3,11 @@ import morgan from "morgan";
 import mongoose from "mongoose";
 import cors from "cors";
 import therapistRoute from "./routers/therapistRoute"
+import contactRoute from "./routers/ContactRoute"
 import swaggerDocumention from "./happer/documentations"
 const app = express();
+import useRouter from "./routers/user"
+
 
 app.use(cors({ origin: "*" }));
 app.use(morgan("dev"));
@@ -16,8 +19,10 @@ app.get("/", (req, res) => {
 });
 swaggerDocumention(app);
 app.use("/Document", express.static("../Document"));
-
+app.use("/api/user/",useRouter)
+app.use("/api/contact/", contactRoute);
 app.use("/api/therapist/", therapistRoute)
+
 
 app.use("/**", (req, res) => {
   res.json({ error: { status: 404, message: "Router not found" } });

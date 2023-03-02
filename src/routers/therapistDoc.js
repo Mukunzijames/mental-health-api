@@ -20,10 +20,7 @@ const createTherapist = {
                             type: "string",
                             example: "mashami"
                         },
-                        password: {
-                            type: "string",
-                            example: "mashami"
-                        },
+                       
                         phoneNumber: {
                             type: "string",
                             example: "+25078884884"
