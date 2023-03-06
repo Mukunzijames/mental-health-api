@@ -22,13 +22,14 @@ router.post("/register", upload.fields([{ name: 'profile_picture', maxCount: 1 }
     // try {
 
     try {
+        
         let result1
         const result = await cloudinary.uploader.upload(req.files.profile_picture[0].path)
-        await cloudinary.uploader.upload(req.files.Degree[0].path, { resource_type: 'raw' }).then((res) => { result1= res }).catch((err) => { console.log(err); })
-        
+        await cloudinary.uploader.upload(req.files.Degree[0].path, { resource_type: 'raw' }).then((res) => { result1 = res }).catch((err) => { console.log(err); })
+
         const salt = await bcrypt.genSalt(10);
         const hashedPass = await bcrypt.hash(req.body.password, salt)
-
+        
 
         const newTherapist = new Therapist({
             Names: req.body.Names,
@@ -55,7 +56,7 @@ router.post("/register", upload.fields([{ name: 'profile_picture', maxCount: 1 }
             })
         }
         else {
-           
+
             const therapist = await newTherapist.save();
             return res.status(200).json(therapist);
         }
@@ -64,5 +65,33 @@ router.post("/register", upload.fields([{ name: 'profile_picture', maxCount: 1 }
     }
 });
 
+router.post("/search", async (req, res) => {
+    
+    try {
+        console.log(req.body);
+        const Therapi = await Therapist.find({ Names: req.body.Names })
+        console.log(Therapi);
+        if (Therapi.length !== 0) {
+            console.log(Therapi)
+            return res.status(200).json(Therapi)
+        } else {
+
+            return res.status(401).json({
+                message: "Not Found"
+            })
+        }
+        } catch (error) {
+
+        }
+
+    });
+    router.get("/all", async (req, res) => {
+        try {
+            const therapist = await Therapist.find()
+            return res.status(200).json(therapist)
+        } catch (err) {
+            return res.status(401).json(err)
+        }
+    });
 // router.patch("/role/:id",)
 export default router;
