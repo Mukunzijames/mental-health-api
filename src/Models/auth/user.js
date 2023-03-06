@@ -38,7 +38,7 @@ const userSchema = mongoose.Schema({
     role:{
         type:String,
         default: "user"
-    },
+    },token: { type: String },
     
 },
 { timestamps: true })

@@ -79,6 +79,10 @@ const therapistSchema = mongoose.Schema({
         type:Boolean,
         default: false
     },
+    role:{
+        type:String,
+        default: "therapist"
+    },token: { type: String},
     
     
 },
