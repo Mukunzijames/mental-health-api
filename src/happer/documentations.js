@@ -3,6 +3,7 @@ import swaggerUi from "swagger-ui-express"
 import TherapistRegDoc from "../routers/therapistDoc"
 import contactDoc from "../routers/ContactRouteDoc"
 import userRegDoc from "../routers/userDoc"
+import authDoc from "../routers/authDoc"
 const options= {
     definition: {
         openapi: '3.0.0',
@@ -23,6 +24,7 @@ const options= {
           { name: 'THERAPIST', description: 'Therapist Routes' },
           { name: 'CONTACT', description: 'contact Routes' },
           {name: 'USER', description:'user routes'},
+          {name: 'AUTHENTICATION',description:'Authentacation'}
          
         ],
        
@@ -43,7 +45,9 @@ const options= {
         paths: {
             ...TherapistRegDoc,
             ...contactDoc,
-            ...userRegDoc
+            ...userRegDoc,
+            ...authDoc
+            
         },
       },
       apis: ['../routes/**/*.js'],
