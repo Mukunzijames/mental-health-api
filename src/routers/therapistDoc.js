@@ -114,10 +114,79 @@ const createTherapist = {
     },
 }
 
+
+
+const searchTherapist = {
+    tags: ["THERAPIST"],
+    description: "SEARCH A THERAPIST ",
+    requestBody: {
+        content: {
+            "application/json": {
+                schema: {
+                    type: "object",
+                    properties: {
+                        Names: {
+                            type: "string",
+                            example: "mashami"
+                        },
+                        
+
+                    },
+                },
+            },
+        },
+    },
+    responses: {
+        200: {
+            description: "OK",
+
+            content: {
+                "application/json": {
+                    Schema: {
+                        type: "object",
+                        example: {
+                            count: 0,
+                            user: [],
+                        },
+                    },
+                },
+            },
+        },
+    },
+}
+
+const GetAllTherapistExits = {
+    tags: ["THERAPIST"],
+    description: "this API it for getting all the users exits in database no need of log in!",
+    responses: {
+        200: {
+            description: "OK",
+
+            content: {
+                "application/json": {
+                    Schema: {
+                        type: "object",
+                        example: {
+                            count: 0,
+                            user: [],
+                        },
+                    },
+                },
+            },
+        },
+    },
+}
+
 const TherapistRegDoc = {
     "/api/therapist/register": {
         post: createTherapist
     },
+    "/api/therapist/search":{
+        post: searchTherapist
+    },
+    "/api/therapist/all":{
+        get: GetAllTherapistExits
+    }
 
 };
 
