@@ -1,11 +1,12 @@
 
 import express from "express";
 import Therapist from "../Models/auth/therapist";
-
+import middlewares from "../middleware/middlewares";
+import User from "../Models/auth/user"
 import bcrypt from "bcrypt"
 import multer from "multer"
 import cloudinary from "../happer/cloudinary"
-
+import group from "../Models/groups"
 
 const router = express.Router()
 const storage = multer.diskStorage({
@@ -22,14 +23,14 @@ router.post("/register", upload.fields([{ name: 'profile_picture', maxCount: 1 }
     // try {
 
     try {
-        
+
         let result1
         const result = await cloudinary.uploader.upload(req.files.profile_picture[0].path)
         await cloudinary.uploader.upload(req.files.Degree[0].path, { resource_type: 'raw' }).then((res) => { result1 = res }).catch((err) => { console.log(err); })
 
         const salt = await bcrypt.genSalt(10);
         const hashedPass = await bcrypt.hash(req.body.password, salt)
-        
+
 
         const newTherapist = new Therapist({
             Names: req.body.Names,
@@ -66,13 +67,13 @@ router.post("/register", upload.fields([{ name: 'profile_picture', maxCount: 1 }
 });
 
 router.post("/search", async (req, res) => {
-    
+
     try {
-        console.log(req.body);
+        
         const Therapi = await Therapist.find({ Names: req.body.Names })
-        console.log(Therapi);
+       
         if (Therapi.length !== 0) {
-            console.log(Therapi)
+            
             return res.status(200).json(Therapi)
         } else {
 
@@ -80,18 +81,110 @@ router.post("/search", async (req, res) => {
                 message: "Not Found"
             })
         }
-        } catch (error) {
+    } catch (error) {
 
-        }
+    }
 
-    });
-    router.get("/all", async (req, res) => {
-        try {
-            const therapist = await Therapist.find()
-            return res.status(200).json(therapist)
-        } catch (err) {
-            return res.status(401).json(err)
+});
+router.get("/all", async (req, res) => {
+    try {
+        const therapist = await Therapist.find()
+        return res.status(200).json(therapist)
+    } catch (err) {
+        return res.status(401).json(err)
+    }
+});
+
+
+router.post('/group/create', middlewares.middlewareTherapist, async (req, res) => {
+    try {
+        const userId = req.userData.therapiID
+
+        const newGroup = new group({
+            groupName: req.body.groupName,
+            therapist: userId
+
+        });
+        const groupname = await group.find({ groupName: req.body.groupName, therapist: userId })
+        // const therapistId = await group.findById({ therapist:userId })
+        if (groupname.length !== 0) {
+            return res.status(400).json({
+                message: "this group name is already used"
+            })
+        } else {
+            newGroup.save();
+            return res.status(201).json(newGroup);
         }
-    });
-// router.patch("/role/:id",)
+    } catch (error) {
+        return res.status(500).json(error)
+
+    }
+});
+
+router.get("/group/all", middlewares.middlewareTherapist, async (req, res) => {
+    try {
+        const userId = req.userData.therapiID
+        const groups = await group.find({ therapist: userId })
+        if (!groups) {
+            return res.status(404).json({
+                message: "No group create yet"
+            })
+        }
+        return res.status(200).json(groups)
+    } catch (err) {
+        return res.status(401).json(err)
+    }
+});
+
+router.patch("/group/asign/:id", middlewares.middlewareTherapist, async (req, res) => {
+    try {
+        const username = req.body.Names
+        const user = await User.findOne({ Names: username })
+        const user_id = user._id
+        const { userId } = await group.findById(req.params.id);
+        const groupfind = await group.findById(req.params.id);
+        if (groupfind) {
+            if (!(userId.includes(user_id))) {
+                try {
+                    const groupUpdate = await group.findByIdAndUpdate(
+                        req.params.id,
+
+                        {
+                            $inc: { patients: 1 },
+                            $push: { userId: user_id }
+                        },
+                        { new: true }
+                    )
+                    return res.status(200).json(groupUpdate);
+                } catch (err) {
+                    return res.status(500).json(err)
+                }
+            } else {
+                return res.status(404).json({
+                    message: "User already exit in group"
+                })
+            }
+        } else {
+            return res.status(404).json({
+                message: "No such group"
+            })
+        }
+    } catch (error) {
+       return res.status(500).json({
+        data:error,
+        message:"Server Error"
+       })
+    }
+})
+
+router.get("/group/groups", async (req, res) => {
+    try {
+
+        const groups = await group.find().populate("therapist", "Names -_id")
+
+        return res.status(200).json(groups)
+    } catch (err) {
+        return res.status(401).json(err)
+    }
+});
 export default router;

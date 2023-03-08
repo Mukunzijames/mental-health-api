@@ -1,7 +1,8 @@
 require("dotenv")
 
-const jwt = require("jsonwebtoken")
-const User = require("../models/User")
+import jwt from "jsonwebtoken"
+import User from "../Models/auth/user"
+import Therapist from "../Models/auth/therapist"
 
 const middleware = (req, res, next) => {
     try {
@@ -12,7 +13,7 @@ const middleware = (req, res, next) => {
         const decode = jwt.verify(token, `${process.env.TOKEN_KEY}`)
 
         req.userData = decode
-
+       
         next();
     } catch (error) {
         console.log(error);
@@ -22,24 +23,6 @@ const middleware = (req, res, next) => {
     }
 }
 
-const middlewarepost = (req, res, next) => {
-    try {
-        console.log(req.headers)
-        const authHeader = req.headers.token || req.headers.authorization;
-        const token = authHeader.split(' ')[1]
-        const decode = jwt.verify(token, `${process.env.TOKEN_KEY}`)
-        // console.log(token)
-        req.userData = decode
-        // console.log(req.userData)
-
-        next();
-    } catch (error) {
-        console.log(error);
-        return res.status(401).json({
-            message: "Authentication falied"
-        })
-    }
-}
 const middlewareAdmin = async (req, res, next) => {
     try {
         const authHeader = req.headers.token || req.headers.authorization;
@@ -69,23 +52,39 @@ const middlewareAdmin = async (req, res, next) => {
 
 }
 
-function anonymousAuth(req, res, next) {
-    console.table(req.cookies);
-    if (!req.cookies.userId) {
 
-        const userId = uuid.v4();
+const middlewareTherapist = async (req, res, next) => {
+    try {
+        const authHeader = req.headers.token || req.headers.authorization;
 
-        console.log(res.cookie('userId', userId, { httpOnly: true }))
-        res.cookie('userId', userId, { httpOnly: true })
-        next();
-    } else {
-        // call the next middleware function in the stack
-        return res.status(200).json({
-            message: "a user already like or view this post"
+        const token = authHeader.split(' ')[1]
+      
+        const decode = jwt.verify(token, `${process.env.TOKEN_KEY}`)
 
+        req.userData = decode
+        
+        const userid = req.userData.therapiID
+        
+        const therapi = await Therapist.findById(userid);
+       
+        if (therapi) {
+            console.log("admitted")
+            next(); 
+        } else {
+
+            return res.status(402).json({
+                message: "you are not Authorized this is for Therapist"
+            })
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(401).json({
+            message: "Authentication falied"
         })
-
     }
+
 }
 
-module.exports = { middleware, middlewarepost, middlewareAdmin, anonymousAuth };
+
+// module.exports = { middleware, middlewareAdmin, anonymousAuth, middlewareTherapist };
+export default {middleware,middlewareAdmin, middlewareTherapist}

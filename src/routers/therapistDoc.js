@@ -20,7 +20,7 @@ const createTherapist = {
                             type: "string",
                             example: "mashami"
                         },
-                       
+
                         phoneNumber: {
                             type: "string",
                             example: "+25078884884"
@@ -114,6 +114,46 @@ const createTherapist = {
     },
 }
 
+const createGroup = {
+    tags: ["THERAPIST"],
+    description: "REGISTER AND LOG IN TO USER",
+    security: [{
+        token: []
+    }],
+
+    requestBody: {
+        content: {
+            "application/json": {
+                schema: {
+                    type: "object",
+                    properties: {
+                        groupName: {
+                            type: "string",
+                            example: "counselor group"
+                        },
+                    },
+                },
+            },
+        },
+    },
+    responses: {
+        200: {
+            description: "OK",
+
+            content: {
+                "application/json": {
+                    Schema: {
+                        type: "object",
+                        example: {
+                            count: 0,
+                            user: [],
+                        },
+                    },
+                },
+            },
+        },
+    },
+}
 
 
 const searchTherapist = {
@@ -129,7 +169,7 @@ const searchTherapist = {
                             type: "string",
                             example: "mashami"
                         },
-                        
+
 
                     },
                 },
@@ -177,16 +217,122 @@ const GetAllTherapistExits = {
     },
 }
 
+const GetAllGroups = {
+    tags: ["THERAPIST"],
+    description: "this API it for getting all the users exits in database no need of log in!",
+    security: [{
+        token: []
+    }],
+    responses: {
+        200: {
+            description: "OK",
+
+            content: {
+                "application/json": {
+                    Schema: {
+                        type: "object",
+                        example: {
+                            count: 0,
+                            user: [],
+                        },
+                    },
+                },
+            },
+        },
+    },
+}
+
+const GetGroups = {
+    tags: ["THERAPIST"],
+    description: "this API it for getting all the users exits in database no need of log in!",
+
+    responses: {
+        200: {
+            description: "OK",
+
+            content: {
+                "application/json": {
+                    Schema: {
+                        type: "object",
+                        example: {
+                            count: 0,
+                            user: [],
+                        },
+                    },
+                },
+            },
+        },
+    },
+}
+const asignUsertoGroup = {
+    tags: ['THERAPIST'],
+    description: "Update POST API it require you to generation a post-Id but will be for the owner and Admin",
+    security:[{
+        token :[]
+    }],
+    parameters: [
+        {
+            name: "id",
+            in: "path",
+            description: "id of POST",
+            type: "string",
+            example: "63caaf3527b29e1d399896da"
+        }
+    ],
+    requestBody: {
+        content: {
+            "application/json": {
+                schema: {
+                    type: "object",
+                    properties: {
+                        Names: {
+                            type: "string",
+                            example: "paccy"
+                        },
+                    },
+                },
+            },
+        },
+    },
+    responses: {
+        201: {
+            description: "OK",
+            content: {
+                "application/json": {
+                    type: "object",
+                    example: {
+                        status: "success",
+                        data: []
+                    },
+                },
+            },
+        },
+    },
+};
+
 const TherapistRegDoc = {
     "/api/therapist/register": {
         post: createTherapist
     },
-    "/api/therapist/search":{
+    "/api/therapist/search": {
         post: searchTherapist
     },
-    "/api/therapist/all":{
+    "/api/therapist/all": {
         get: GetAllTherapistExits
-    }
+    },
+    "/api/therapist/group/create": {
+        post: createGroup
+    },
+    "/api/therapist/group/all": {
+        get: GetAllGroups
+    },
+    "/api/therapist/group/groups": {
+        get: GetGroups
+    },
+    "/api/therapist/group/asign/{id}":{
+        patch: asignUsertoGroup
+    
+    },
 
 };
 
