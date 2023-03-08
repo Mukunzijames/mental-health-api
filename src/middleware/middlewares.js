@@ -9,7 +9,7 @@ const middleware = (req, res, next) => {
         const authHeader = req.headers.token || req.headers.authorization;
 
         const token = authHeader.split(' ')[1]
-        console.log(token)
+        
         const decode = jwt.verify(token, `${process.env.TOKEN_KEY}`)
 
         req.userData = decode
@@ -28,7 +28,7 @@ const middlewareAdmin = async (req, res, next) => {
         const authHeader = req.headers.token || req.headers.authorization;
 
         const token = authHeader.split(' ')[1]
-        console.log(token)
+        
         const decode = jwt.verify(token, `${process.env.TOKEN_KEY}`)
 
         req.userData = decode
@@ -77,9 +77,10 @@ const middlewareTherapist = async (req, res, next) => {
             })
         }
     } catch (error) {
-        console.log(error);
+        
         return res.status(401).json({
-            message: "Authentication falied"
+            message: "Authentication falied",
+            error:error
         })
     }
 

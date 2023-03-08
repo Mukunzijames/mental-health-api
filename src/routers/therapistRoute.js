@@ -66,7 +66,7 @@ router.post("/register", upload.fields([{ name: 'profile_picture', maxCount: 1 }
     }
 });
 
-router.post("/search", async (req, res) => {
+router.post("/search",middlewares.middleware, async (req, res) => {
 
     try {
         
@@ -187,7 +187,26 @@ router.get("/group/groups", async (req, res) => {
         return res.status(401).json(err)
     }
 });
+router.post("/search/users",middlewares.middleware, async (req, res) => {
 
+    try {
+        
+        const users = await User.find({ Names: req.body.Names })
+       
+        if (users.length !== 0) {
+            
+            return res.status(200).json(users)
+        } else {
+
+            return res.status(401).json({
+                message: "Not Found"
+            })
+        }
+    } catch (error) {
+
+    }
+
+});
 router.get("/group/member/:id", async(req, res)=>{
     try {
         const members = await group.findById(req.params.id).select("userId groupName").populate("userId", "Names");
