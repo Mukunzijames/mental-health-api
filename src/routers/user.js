@@ -3,6 +3,7 @@ import express from "express";
 import User from "../Models/auth/user";
 import bcrypt from "bcrypt"
 import multer from "multer"
+import middlewares from "../middleware/middlewares";
 
 
 
@@ -53,9 +54,10 @@ router.post("/register", async (req, res) => {
     }
   });
 
-  router.get("/all", async (req, res) => {
+  router.get("/all", middlewares.middleware,async (req, res) => {
     try {
-        const users = await User.find()
+        let users = await User.find()
+        users = users.filter((user)=>user.role !== "admin")
         return res.status(200).json(users)
     } catch (err) {
         return res.status(401).json(err)

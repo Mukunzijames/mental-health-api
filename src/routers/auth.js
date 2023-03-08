@@ -6,8 +6,6 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 const router = express.Router();
 
-
-
 router.post("/login", async (req, res) => {
     try {
 
@@ -32,10 +30,10 @@ router.post("/login", async (req, res) => {
                     }
                 );
 
-                return res.status(200).json({token});
+                return res.status(200).json({ token });
             }
             return res.status(400).send("Invalid Credentials for a User");
-        } else if(therapi){
+        } else if (therapi) {
 
             if (therapi && (await bcrypt.compare(password, therapi.password))) {
                 // Create token
@@ -46,17 +44,16 @@ router.post("/login", async (req, res) => {
                         expiresIn: "2h",
                     }
                 );
-                return res.status(200).json({token});
+                return res.status(200).json({ token });
             }
 
             return res.status(400).send("Invalid Credentials");
 
-        }else{
+        } else {
             res.status(404).json({
-                message:"A user not Found"
+                message: "A user not Found"
             })
         }
-        
     } catch (err) {
         return res.status(500).json(err)
     }

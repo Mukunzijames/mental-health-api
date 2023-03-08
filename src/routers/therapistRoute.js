@@ -187,4 +187,14 @@ router.get("/group/groups", async (req, res) => {
         return res.status(401).json(err)
     }
 });
+
+router.get("/group/member/:id", async(req, res)=>{
+    try {
+        const members = await group.findById(req.params.id).select("userId groupName").populate("userId", "Names");
+       return res.status(200).json(members)
+
+    } catch (error) {
+        return res.status(500).json(error)
+    }
+})
 export default router;
