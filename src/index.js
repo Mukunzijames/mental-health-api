@@ -8,6 +8,7 @@ import swaggerDocumention from "./happer/documentations"
 const app = express();
 import useRouter from "./routers/user"
 import auth from "./routers/auth"
+import forget from "./routers/forgetPassword"
 
 
 app.use(cors({ origin: "*" }));
@@ -20,10 +21,11 @@ app.get("/", (req, res) => {
 });
 swaggerDocumention(app);
 app.use("/Document", express.static("../Document"));
-app.use("/api/auth/",auth)
-app.use("/api/user/",useRouter)
+app.use("/api/auth/",auth);
+app.use("/api/user/",useRouter);
 app.use("/api/contact/", contactRoute);
-app.use("/api/therapist/", therapistRoute)
+app.use("/api/therapist/", therapistRoute);
+app.use("/api/auth/",forget);
 
 
 app.use("/**", (req, res) => {

@@ -62,6 +62,9 @@ const createUser = {
 const GetAlluserExits = {
     tags: ["USER"],
     description: "this API it for getting all the users exits in database no need of log in!",
+    security: [{
+        token: []
+    }],
     responses: {
         200: {
             description: "OK",

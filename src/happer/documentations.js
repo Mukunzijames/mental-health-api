@@ -4,6 +4,7 @@ import TherapistRegDoc from "../routers/therapistDoc"
 import contactDoc from "../routers/ContactRouteDoc"
 import userRegDoc from "../routers/userDoc"
 import authDoc from "../routers/authDoc"
+import forgetDoc from "../routers/forgetDoc"
 const options= {
     definition: {
         openapi: '3.0.0',
@@ -14,7 +15,7 @@ const options= {
         },
         servers: [
           {
-            url: 'http://localhost:5000/',
+            url: 'http://localhost:5015/',
             description: 'Development server',
           },
           
@@ -25,6 +26,7 @@ const options= {
           { name: 'CONTACT', description: 'contact Routes' },
           {name: 'USER', description:'user routes'},
           {name: 'AUTHENTICATION',description:'Authentacation'}
+
          
         ],
        
@@ -46,7 +48,8 @@ const options= {
             ...TherapistRegDoc,
             ...contactDoc,
             ...userRegDoc,
-            ...authDoc
+            ...authDoc,
+            ...forgetDoc
             
         },
       },

@@ -31,7 +31,6 @@ router.post("/register", upload.fields([{ name: 'profile_picture', maxCount: 1 }
         const salt = await bcrypt.genSalt(10);
         const hashedPass = await bcrypt.hash(req.body.password, salt)
 
-
         const newTherapist = new Therapist({
             Names: req.body.Names,
             email: req.body.email,
@@ -46,8 +45,6 @@ router.post("/register", upload.fields([{ name: 'profile_picture', maxCount: 1 }
             Degree: result1.secure_url,
             Question1: req.body.Question1,
             Question2: req.body.Question2,
-
-
         });
         const TherapistEmail = await Therapist.find({ email: req.body.email })
         if (TherapistEmail.length !== 0) {
@@ -73,7 +70,7 @@ router.post("/search",middlewares.middleware, async (req, res) => {
         const Therapi = await Therapist.find({ Names: req.body.Names })
        
         if (Therapi.length !== 0) {
-            
+             
             return res.status(200).json(Therapi)
         } else {
 
@@ -82,7 +79,7 @@ router.post("/search",middlewares.middleware, async (req, res) => {
             })
         }
     } catch (error) {
-
+           return res.status(500).json(error)
     }
 
 });
@@ -94,7 +91,6 @@ router.get("/all", async (req, res) => {
         return res.status(401).json(err)
     }
 });
-
 
 router.post('/group/create', middlewares.middlewareTherapist, async (req, res) => {
     try {
@@ -175,8 +171,7 @@ router.patch("/group/asign/:id", middlewares.middlewareTherapist, async (req, re
         message:"Server Error"
        })
     }
-})
-
+});
 router.get("/group/groups", async (req, res) => {
     try {
 
