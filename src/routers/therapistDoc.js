@@ -195,6 +195,48 @@ const searchTherapist = {
     },
 }
 
+const searchAUser = {
+    tags: ["USER"],
+    description: "SEARCH A THERAPIST ",
+    security:[{
+        token :[]
+    }],
+    requestBody: {
+        content: {
+            "application/json": {
+                schema: {
+                    type: "object",
+                    properties: {
+                        Names: {
+                            type: "string",
+                            example: "paccy"
+                        },
+
+
+                    },
+                },
+            },
+        },
+    },
+    responses: {
+        200: {
+            description: "OK",
+
+            content: {
+                "application/json": {
+                    Schema: {
+                        type: "object",
+                        example: {
+                            count: 0,
+                            user: [],
+                        },
+                    },
+                },
+            },
+        },
+    },
+}
+
 const GetAllTherapistExits = {
     tags: ["THERAPIST"],
     description: "this API it for getting all the users exits in database no need of log in!",
@@ -310,6 +352,39 @@ const asignUsertoGroup = {
     },
 };
 
+
+const GetUsers_in_group = {
+    tags: ["THERAPIST"],
+    description: "get users member of a group",
+    description: "This Api generated for accessing a Post only by the post owner by using ID of the post",
+    security:[{
+        token :[]
+    }],
+    parameters: [
+        {
+            name: "id",
+            in: "path",
+            description: "id of user",
+            type: "string",
+            example: "63e9227fc807f6e9217d955a"
+        }
+    ],
+    responses: {
+        200: {
+            description: "OK",
+            content: {
+                "application/json": {
+                    type: 'object',
+                    example: {
+                        status: "success",
+                        data: []
+                    },
+                },
+            },
+        },
+    },
+
+};
 const TherapistRegDoc = {
     "/api/therapist/register": {
         post: createTherapist
@@ -332,6 +407,12 @@ const TherapistRegDoc = {
     "/api/therapist/group/asign/{id}":{
         patch: asignUsertoGroup
     
+    },
+    "/api/therapist/group/member/{id}":{
+        get:GetUsers_in_group
+    },
+    "/api/therapist/search/users":{
+        post:searchAUser
     },
 
 };
