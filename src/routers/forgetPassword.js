@@ -16,7 +16,7 @@ router.post("/forget", async(req, res)=> {
             const userEmail = await User.find({email})
             const therapi = await therapy.find({email})
 
-            console.log(userEmail)
+            
 
             if (userEmail.length !== 0 || therapi.length !==0) {
              //const users = await forge.findOne({user:userEmail._id || therapi._id })
