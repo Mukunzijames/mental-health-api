@@ -9,11 +9,11 @@ const middleware = (req, res, next) => {
         const authHeader = req.headers.token || req.headers.authorization;
 
         const token = authHeader.split(' ')[1]
-        
+
         const decode = jwt.verify(token, `${process.env.TOKEN_KEY}`)
 
         req.userData = decode
-       
+
         next();
     } catch (error) {
         console.log(error);
@@ -28,7 +28,7 @@ const middlewareAdmin = async (req, res, next) => {
         const authHeader = req.headers.token || req.headers.authorization;
 
         const token = authHeader.split(' ')[1]
-        
+
         const decode = jwt.verify(token, `${process.env.TOKEN_KEY}`)
 
         req.userData = decode
@@ -58,29 +58,35 @@ const middlewareTherapist = async (req, res, next) => {
         const authHeader = req.headers.token || req.headers.authorization;
 
         const token = authHeader.split(' ')[1]
-      
+
         const decode = jwt.verify(token, `${process.env.TOKEN_KEY}`)
 
         req.userData = decode
-        
+
         const userid = req.userData.therapiID
-        
+
         const therapi = await Therapist.findById(userid);
-       
+         console.log(therapi)
         if (therapi) {
-            console.log("admitted")
-            next(); 
+            if (therapi.Active == "true") {
+                console.log("admitted")
+                next();
+            }else{
+                return res.status(402).json({
+                    message: "you are not Authorized this is for Therapist who is Activated"
+                })
+            }
         } else {
 
             return res.status(402).json({
-                message: "you are not Authorized this is for Therapist"
+                message: "you are not Authorized this is for Therapist who is Activated"
             })
         }
     } catch (error) {
-        
+
         return res.status(401).json({
             message: "Authentication falied",
-            error:error
+            error: error
         })
     }
 
@@ -88,4 +94,4 @@ const middlewareTherapist = async (req, res, next) => {
 
 
 // module.exports = { middleware, middlewareAdmin, anonymousAuth, middlewareTherapist };
-export default {middleware,middlewareAdmin, middlewareTherapist}
+export default { middleware, middlewareAdmin, middlewareTherapist }

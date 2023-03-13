@@ -7,7 +7,7 @@ import bcrypt from "bcrypt"
 import multer from "multer"
 import cloudinary from "../happer/cloudinary"
 import group from "../Models/groups"
-
+import { mail } from "../happer/email";
 const router = express.Router()
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -63,14 +63,14 @@ router.post("/register", upload.fields([{ name: 'profile_picture', maxCount: 1 }
     }
 });
 
-router.post("/search",middlewares.middleware, async (req, res) => {
+router.post("/search", middlewares.middleware, async (req, res) => {
 
     try {
-        
+
         const Therapi = await Therapist.find({ Names: req.body.Names })
-       
+
         if (Therapi.length !== 0) {
-             
+
             return res.status(200).json(Therapi)
         } else {
 
@@ -79,7 +79,7 @@ router.post("/search",middlewares.middleware, async (req, res) => {
             })
         }
     } catch (error) {
-           return res.status(500).json(error)
+        return res.status(500).json(error)
     }
 
 });
@@ -166,13 +166,13 @@ router.patch("/group/asign/:id", middlewares.middlewareTherapist, async (req, re
             })
         }
     } catch (error) {
-       return res.status(500).json({
-        data:error,
-        message:"Server Error"
-       })
+        return res.status(500).json({
+            data: error,
+            message: "Server Error"
+        })
     }
 });
-router.get("/group/groups", async (req, res) => {
+router.get("/group/groups",middlewares.middlewareTherapist ,async (req, res) => {
     try {
 
         const groups = await group.find().populate("therapist", "Names -_id")
@@ -185,11 +185,11 @@ router.get("/group/groups", async (req, res) => {
 router.post("/search/users",middlewares.middleware, async (req, res) => {
 
     try {
-        
+
         const users = await User.find({ Names: req.body.Names })
-       
+
         if (users.length !== 0) {
-            
+
             return res.status(200).json(users)
         } else {
 
@@ -202,13 +202,67 @@ router.post("/search/users",middlewares.middleware, async (req, res) => {
     }
 
 });
-router.get("/group/member/:id", async(req, res)=>{
+router.get("/group/member/:id", middlewares.middlewareTherapist,async (req, res) => {
     try {
         const members = await group.findById(req.params.id).select("userId groupName").populate("userId", "Names");
-       return res.status(200).json(members)
+        return res.status(200).json(members)
 
     } catch (error) {
         return res.status(500).json(error)
     }
 })
+
+router.patch("/admin/activetherapy/:id",middlewares.middlewareAdmin ,async (req, res) => {
+    try {
+
+        const therapy = await Therapist.findById(req.params.id);
+        console.log(therapy)
+        const therapyEmail=therapy.email
+        if (therapy) {
+            try {
+
+                const updateTherapy = await Therapist.findByIdAndUpdate(
+
+                    req.params.id,
+
+                    {
+                        $set: {"Active":req.body.Active}
+
+                    },
+                    { new: true }
+                );
+                await mail(therapyEmail, `congratulations 🥳 your acount has been Activated`);
+                return res.status(200).json(updateTherapy);
+                
+            } catch (err) {
+                return res.status(404).json({
+                    error: err.message,
+                    message: "Failed to up_date"
+                })
+            }
+        } else {
+            return res.status(400).json({
+                message: "not found"
+            })
+        }
+
+    } catch (err) {
+        return res.status(500).json(err)
+    }
+
+})
+
+router.get("/admin/unactiveTherapist",middlewares.middlewareAdmin, async (req, res) => {
+    try {
+
+        const therapy=await Therapist.find({Active:'false'}).select("Names Gender therapist_type Active");
+        
+        return res.status(200).json({ therapy })
+    } catch (err) {
+        return res.status(401).json(err.message)
+    }
+});
 export default router;
+
+
+
