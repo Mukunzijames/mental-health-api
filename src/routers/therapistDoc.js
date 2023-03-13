@@ -1,7 +1,7 @@
 
 const createTherapist = {
     tags: ["THERAPIST"],
-    description: "REGISTER AND LOG IN TO USER",
+    description: "REGISTER Therapy",
     requestBody: {
         content: {
             "multipart/form-data": {
@@ -116,7 +116,7 @@ const createTherapist = {
 
 const createGroup = {
     tags: ["THERAPIST"],
-    description: "REGISTER AND LOG IN TO USER",
+    description: "CREATE A GROUP FOR USER",
     security: [{
         token: []
     }],
@@ -138,7 +138,7 @@ const createGroup = {
     },
     responses: {
         200: {
-            description: "OK",
+            description: "SUCCESSFUL",
 
             content: {
                 "application/json": {
@@ -197,7 +197,7 @@ const searchTherapist = {
 
 const searchAUser = {
     tags: ["USER"],
-    description: "SEARCH A THERAPIST ",
+    description: "SEARCH A USER ",
     security: [{
         token: []
     }],
@@ -239,7 +239,7 @@ const searchAUser = {
 
 const GetAllTherapistExits = {
     tags: ["THERAPIST"],
-    description: "this API it for getting all the users exits in database no need of log in!",
+    description: "this API it for getting all the therapist exits in database no need of log in!",
     responses: {
         200: {
             description: "OK",
@@ -261,7 +261,7 @@ const GetAllTherapistExits = {
 
 const GetAllGroups = {
     tags: ["THERAPIST"],
-    description: "this API it for getting all the users exits in database no need of log in!",
+    description: "API get all groups for therapy!",
     security: [{
         token: []
     }],
@@ -286,7 +286,7 @@ const GetAllGroups = {
 
 const GetGroups = {
     tags: ["THERAPIST"],
-    description: "this API it for getting all the users exits in database no need of log in!",
+    description: "get a ",
 
     responses: {
         200: {
@@ -459,7 +459,38 @@ const GetAllUnActiveTherapy = {
 }
 
 
+const GetTherapy = {
+    tags: ["THERAPIST"],
+    description: "therapist by Id",
+    description: "This Api generated for accessing a Post only by the post owner by using ID of the post",
+    security:[{
+        token :[]
+    }],
+    parameters: [
+        {
+            name: "id",
+            in: "path",
+            description: "id of user",
+            type: "string",
+            example: "6405d582854946abade82969"
+        }
+    ],
+    responses: {
+        200: {
+            description: "OK",
+            content: {
+                "application/json": {
+                    type: 'object',
+                    example: {
+                        status: "success",
+                        data: []
+                    },
+                },
+            },
+        },
+    },
 
+};
 
 const TherapistRegDoc = {
     "/api/therapist/register": {
@@ -495,7 +526,10 @@ const TherapistRegDoc = {
     },
     "/api/therapist/admin/unactiveTherapist": {
         get: GetAllUnActiveTherapy
-    }
+    },
+    "/api/therapist/getTherapy/{id}":{
+        get:GetTherapy
+    },
 
 };
 

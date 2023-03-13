@@ -262,6 +262,15 @@ router.get("/admin/unactiveTherapist",middlewares.middlewareAdmin, async (req, r
         return res.status(401).json(err.message)
     }
 });
+
+router.get("/getTherapy/:id",middlewares.middleware, async (req, res) => {
+    try {
+        const therapy = await Therapist.findById(req.params.id)
+        return res.status(200).json(therapy);
+    } catch (err) {
+        return res.status(500).json(err.message)
+    }
+});
 export default router;
 
 
