@@ -57,7 +57,7 @@ router.patch("/reset", async (req, res) => {
         console.log(userEmail._id)
         if (!(code || user)) {
             return res.status(400).json({
-                message: "Provided token doesn't match",
+                message: "please provide a code ",
                 
             })
         }
@@ -67,8 +67,8 @@ router.patch("/reset", async (req, res) => {
         try {
             const salt = await bcrypt.genSalt(10);
             req.body.password = await bcrypt.hash(req.body.password, salt)
-            const useri= req.body.password
-            userEmail.password=useri
+            const userpassword= req.body.password
+            userEmail.password=userpassword
            await userEmail.save()
 
             // const updatedUserPassword = await User.findByIdAndUpdate(userEmail[0]._id, {

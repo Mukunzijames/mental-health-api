@@ -198,8 +198,8 @@ const searchTherapist = {
 const searchAUser = {
     tags: ["USER"],
     description: "SEARCH A THERAPIST ",
-    security:[{
-        token :[]
+    security: [{
+        token: []
     }],
     requestBody: {
         content: {
@@ -309,8 +309,8 @@ const GetGroups = {
 const asignUsertoGroup = {
     tags: ['THERAPIST'],
     description: "Update POST API it require you to generation a post-Id but will be for the owner and Admin",
-    security:[{
-        token :[]
+    security: [{
+        token: []
     }],
     parameters: [
         {
@@ -357,8 +357,8 @@ const GetUsers_in_group = {
     tags: ["THERAPIST"],
     description: "get users member of a group",
     description: "This Api generated for accessing a Post only by the post owner by using ID of the post",
-    security:[{
-        token :[]
+    security: [{
+        token: []
     }],
     parameters: [
         {
@@ -385,6 +385,82 @@ const GetUsers_in_group = {
     },
 
 };
+
+const adminActiveTherapy = {
+    tags: ['ADMIN'],
+    description: "Update POST API it require you to generation a post-Id but will be for the owner and Admin",
+    security: [{
+        token: []
+    }],
+    parameters: [
+        {
+            name: "id",
+            in: "path",
+            description: "id of POST",
+            type: "string",
+            example: "6405d582854946abade82969"
+        }
+    ],
+    requestBody: {
+        content: {
+            "application/json": {
+                schema: {
+                    type: "object",
+                    properties: {
+                        Active: {
+                            type: "string",
+                            example: "true"
+                        },
+                    },
+                },
+            },
+        },
+    },
+    responses: {
+        201: {
+            description: "OK",
+            content: {
+                "application/json": {
+                    type: "object",
+                    example: {
+                        status: "success",
+                        data: []
+                    },
+                },
+            },
+        },
+    },
+};
+
+
+const GetAllUnActiveTherapy = {
+    tags: ["ADMIN"],
+    description: "this API it for getting all the users exits in database no need of log in!",
+    security: [{
+        token: []
+    }],
+    responses: {
+        200: {
+            description: "OK",
+
+            content: {
+                "application/json": {
+                    Schema: {
+                        type: "object",
+                        example: {
+                            count: 0,
+                            user: [],
+                        },
+                    },
+                },
+            },
+        },
+    },
+}
+
+
+
+
 const TherapistRegDoc = {
     "/api/therapist/register": {
         post: createTherapist
@@ -404,16 +480,22 @@ const TherapistRegDoc = {
     "/api/therapist/group/groups": {
         get: GetGroups
     },
-    "/api/therapist/group/asign/{id}":{
+    "/api/therapist/group/asign/{id}": {
         patch: asignUsertoGroup
-    
+
     },
-    "/api/therapist/group/member/{id}":{
-        get:GetUsers_in_group
+    "/api/therapist/group/member/{id}": {
+        get: GetUsers_in_group
     },
-    "/api/therapist/search/users":{
-        post:searchAUser
+    "/api/therapist/search/users": {
+        post: searchAUser
     },
+    "/api/therapist/admin/activetherapy/{id}": {
+        patch: adminActiveTherapy
+    },
+    "/api/therapist/admin/unactiveTherapist": {
+        get: GetAllUnActiveTherapy
+    }
 
 };
 
