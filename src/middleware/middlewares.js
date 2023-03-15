@@ -66,20 +66,22 @@ const middlewareTherapist = async (req, res, next) => {
         const userid = req.userData.therapiID
 
         const therapi = await Therapist.findById(userid);
-         console.log(therapi)
+         console.log(therapi.Active)
         if (therapi) {
-            if (therapi.Active == "true") {
+            if (therapi.Active === true) {
                 console.log("admitted")
                 next();
+            
             }else{
                 return res.status(402).json({
-                    message: "you are not Authorized this is for Therapist who is Activated"
+                    message: "you are not yet Authorized this is for Therapist who is Activated"
                 })
             }
+           
         } else {
 
             return res.status(402).json({
-                message: "you are not Authorized this is for Therapist who is Activated"
+                message: "you are not Authorized"
             })
         }
     } catch (error) {

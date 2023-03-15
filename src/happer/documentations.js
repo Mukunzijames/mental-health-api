@@ -18,6 +18,10 @@ const options= {
             url: 'http://localhost:5015/',
             description: 'Development server',
           },
+          {
+            url:'https://mental-health-api-3km4.onrender.com/swagger/',
+            description: 'Development server',
+          }
           
           
         ],
