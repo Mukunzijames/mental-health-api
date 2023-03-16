@@ -5,6 +5,8 @@ import contactDoc from "../routers/ContactRouteDoc"
 import userRegDoc from "../routers/userDoc"
 import authDoc from "../routers/authDoc"
 import forgetDoc from "../routers/forgetDoc"
+import conversationDoc from "../routers/conversationDoc"
+import messageDoc from "../routers/messageDoc"
 const options= {
     definition: {
         openapi: '3.0.0',
@@ -16,10 +18,10 @@ const options= {
         servers: [
           {
             url: 'http://localhost:5015/',
-            description: 'Development server',
+            description: 'localHost server',
           },
           {
-            url:'https://mental-health-api-3km4.onrender.com/swagger/',
+            url:'https://mental-health-api-3km4.onrender.com/',
             description: 'Development server',
           }
           
@@ -29,7 +31,8 @@ const options= {
           { name: 'THERAPIST', description: 'Therapist Routes' },
           { name: 'CONTACT', description: 'contact Routes' },
           {name: 'USER', description:'user routes'},
-          {name: 'AUTHENTICATION',description:'Authentacation'}
+          {name: 'AUTHENTICATION',description:'Authentacation'},
+          {name:'CONVERSATION', description:'messaging'},
 
          
         ],
@@ -53,7 +56,10 @@ const options= {
             ...contactDoc,
             ...userRegDoc,
             ...authDoc,
-            ...forgetDoc
+            ...forgetDoc,
+            ...conversationDoc,
+            ...messageDoc
+            
             
         },
       },
