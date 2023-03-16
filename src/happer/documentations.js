@@ -19,7 +19,7 @@ const options= {
             description: 'Development server',
           },
           {
-            url:'https://mental-health-api-3km4.onrender.com/swagger/',
+            url:'https://mental-health-api-3km4.onrender.com/',
             description: 'Development server',
           }
           
