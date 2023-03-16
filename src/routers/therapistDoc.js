@@ -530,6 +530,9 @@ const TherapistRegDoc = {
     "/api/therapist/getTherapy/{id}":{
         get:GetTherapy
     },
+    "/api/therapist/Availability/create":{
+       post: createAvailability
+    },
 
 };
 

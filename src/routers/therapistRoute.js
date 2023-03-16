@@ -1,6 +1,7 @@
 import express from "express";
 import Therapist from "../Models/auth/therapist";
 import middlewares from "../middleware/middlewares";
+<<<<<<< HEAD
 import User from "../Models/auth/user";
 import bcrypt from "bcrypt";
 import multer from "multer";
@@ -9,6 +10,27 @@ import group from "../Models/groups";
 import { mail } from "../happer/email";
 const router = express.Router();
 const storage = multer.diskStorage({});
+=======
+import User from "../Models/auth/user"
+import bcrypt from "bcrypt"
+import multer from "multer"
+import cloudinary from "../happer/cloudinary"
+import group from "../Models/groups"
+<<<<<<< HEAD
+import { mail } from "../happer/email";
+=======
+import Appointment from "../Models/availability";
+
+>>>>>>> 9a3450b (changes)
+const router = express.Router()
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "Document")
+    }, filename(req, file, cb) {
+        cb(null, file.originalname)
+    },
+});
+>>>>>>> 42a3b5c (changes)
 
 const upload = multer({ storage: storage });
 
@@ -292,4 +314,33 @@ router.get("/getTherapy/:id", middlewares.middleware, async (req, res) => {
     return res.status(500).json(err.message);
   }
 });
+
+
+router.post('/Availability/create',middlewares.middlewareTherapist,async(req,res)=>{
+    try {
+        const therapid= userid;
+        const newAvailability=new Availability({
+           
+            startDate:req.body.startDate,
+            endingDate:req.body.endingDate,
+            startingTime:req.body.startingTime,
+            endingTime:req.body.endingTime,
+            Therapist:therapid.Names
+        });
+        const availability= await Availability.find({
+            name:req.body.name,
+            startDate:req.body.startDate,
+            endingDate:req.body.endingDate,
+            startingTime:req.body.startingTime,
+            endingTime:req.body.endingTime,
+            Therapist:req.body.Therapist
+        });
+        
+      newAvailability.save();
+      return res.status(201).json({message:"newAvailability"})
+    } catch (error) {
+        return res.status(500).json(error)
+    }
+});
+
 export default router;

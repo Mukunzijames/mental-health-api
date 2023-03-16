@@ -4,6 +4,7 @@ import User from "../Models/auth/user";
 import bcrypt from "bcrypt"
 import multer from "multer"
 import middlewares from "../middleware/middlewares";
+import Appointment from "../Models/availability";
 
 
 
@@ -63,5 +64,29 @@ router.post("/register", async (req, res) => {
         return res.status(401).json(err)
     }
 });
+// router.post("/Appointment",async(req,res)=>{
+// try {
+//   const newAppointment= new Appointment ({
+
+//     AppointmentInfo,
+//     TherapistInfo,
+//     paymentInformation,
+//     confirmationInfo,
+//     appointmentStatus
+//   });
+//   const appointment = await Appointment.find({
+//     AppointmentInfo,
+//     TherapistInfo,
+//     paymentInformation,
+//     confirmationInfo,
+//     appointmentStatus
+
+//   });
+//   newAppointment.save();
+//   return res.status(201).json({message:"newAppointment"})
+// } catch (error) {
+//   return res.status(500).json(error)
+// }
+// });
 
 export default router;
