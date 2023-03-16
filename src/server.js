@@ -2,6 +2,8 @@ import app from ".";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 
+
+
 dotenv.config();
 
 const { PORT, MONGODB_URL } = process.env;
@@ -13,7 +15,7 @@ const server = app.listen(PORT, () => {
     .connect(MONGODB_URL)
     .then(() => {
       console.log("connected to mongodb");
-      console.info("you server is running well pn port: ", PORT);
+      console.info("Server is running on port: ", PORT);
     })
     .catch((err) => {
       console.log(err);

@@ -9,8 +9,8 @@ const app = express();
 import useRouter from "./routers/user"
 import auth from "./routers/auth"
 import forget from "./routers/forgetPassword"
-
-
+import conversationRouter from "./routers/conversation"
+import MessagesRouter from "./routers/messages"
 app.use(cors({ origin: "*" }));
 app.use(morgan("dev"));
 app.use(express.json());
@@ -26,6 +26,8 @@ app.use("/api/user/",useRouter);
 app.use("/api/contact/", contactRoute);
 app.use("/api/therapist/", therapistRoute);
 app.use("/api/auth/",forget);
+app.use('/api/conversation',conversationRouter);
+app.use('/api/messages',MessagesRouter);
 
 
 app.use("/**", (req, res) => {
