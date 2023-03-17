@@ -30,7 +30,7 @@ router.post("/login", async (req, res) => {
                     }
                 );
 
-                return res.status(200).json({ token });
+                return res.status(200).json({ user,token });
             }
             return res.status(400).send("Invalid Credentials for a User");
         } else if (therapi) {
@@ -44,7 +44,7 @@ router.post("/login", async (req, res) => {
                         expiresIn: "2h",
                     }
                 );
-                return res.status(200).json({ token });
+                return res.status(200).json({ therapi,token });
             }
 
             return res.status(400).send("Invalid Credentials");
