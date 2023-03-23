@@ -59,7 +59,7 @@ router.post("/register", upload.fields([{ name: 'profile_picture', maxCount: 1 }
             return res.status(200).json(therapist);
         }
     } catch (error) {
-        return res.status(400).json(error)
+        return res.status(500).json(error)
     }
 });
 
