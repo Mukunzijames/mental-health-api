@@ -25,8 +25,8 @@ router.post("/register", upload.fields([{ name: 'profile_picture', maxCount: 1 }
     try {
 
         let result1
-        const result = await cloudinary.uploader.upload(req.files.profile_picture[0].path)
         console.log(req.files);
+        const result = await cloudinary.uploader.upload(req.files.profile_picture[0].path)
         await cloudinary.uploader.upload(req.files.Degree[0].path, { resource_type: 'raw' }).then((res) => { result1 = res }).catch((err) => { console.log(err); })
 
         console.log(result);
