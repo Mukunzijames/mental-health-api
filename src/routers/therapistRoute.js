@@ -7,17 +7,8 @@ import multer from "multer";
 import cloudinary from "../happer/cloudinary";
 import group from "../Models/groups";
 import { mail } from "../happer/email";
-import fs from "fs";
 const router = express.Router();
 const storage = multer.diskStorage({});
-
-const fileFilter = (req, file, cb) => {
-  if (fs.existsSync(path)) {
-    cb(null, false);
-  } else {
-    cb(null, true);
-  }
-};
 
 const upload = multer({ storage: storage });
 
@@ -28,16 +19,13 @@ router.post(
     { name: "Degree", maxCount: 1 },
   ]),
   async (req, res) => {
-    // try {
-
     try {
       let result1;
-      console.log(req.files);
       if (!req.files.profile_picture || !req.files.Degree)
         return res.status(400).json({
           message: "Please provide all require files (profile_picture, Degree)",
         });
-      let result = await cloudinary.uploader.upload(
+      const result = await cloudinary.uploader.upload(
         req.files.profile_picture[0].path
       );
 
@@ -50,8 +38,6 @@ router.post(
           console.log(err);
         });
 
-      console.log(result);
-      console.log(result1, "Degree");
       const salt = await bcrypt.genSalt(10);
       const hashedPass = await bcrypt.hash(req.body.password, salt);
 
@@ -70,15 +56,16 @@ router.post(
         Question1: req.body.Question1,
         Question2: req.body.Question2,
       });
+
       const TherapistEmail = await Therapist.find({ email: req.body.email });
-      if (TherapistEmail.length !== 0) {
+
+      if (TherapistEmail.length !== 0)
         return res.status(402).json({
           message: "this user Email is already used",
         });
-      } else {
-        const therapist = await newTherapist.save();
-        return res.status(200).json(therapist);
-      }
+
+      const therapist = await newTherapist.save();
+      return res.status(200).json(therapist);
     } catch (error) {
       console.log(error);
       return res.status(500).json(error);
