@@ -9,18 +9,7 @@ import group from "../Models/groups";
 import { mail } from "../happer/email";
 import fs from "fs";
 const router = express.Router();
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    let path = "./document";
-    if (!fs.existsSync(path)) {
-      fs.mkdirSync(path);
-    }
-    cb(null, path);
-  },
-  filename(req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
+const storage = multer.diskStorage({});
 
 const fileFilter = (req, file, cb) => {
   if (fs.existsSync(path)) {
