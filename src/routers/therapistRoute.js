@@ -16,12 +16,9 @@ import bcrypt from "bcrypt"
 import multer from "multer"
 import cloudinary from "../happer/cloudinary"
 import group from "../Models/groups"
-<<<<<<< HEAD
 import { mail } from "../happer/email";
-=======
-import Appointment from "../Models/availability";
+import Availability from "../Models/availability";
 
->>>>>>> 9a3450b (changes)
 const router = express.Router()
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -318,7 +315,7 @@ router.get("/getTherapy/:id", middlewares.middleware, async (req, res) => {
 
 router.post('/Availability/create',middlewares.middlewareTherapist,async(req,res)=>{
     try {
-        const therapid= userid;
+        const therapid=req.userData.therapiID;
         const newAvailability=new Availability({
            
             startDate:req.body.startDate,
@@ -333,7 +330,7 @@ router.post('/Availability/create',middlewares.middlewareTherapist,async(req,res
             endingDate:req.body.endingDate,
             startingTime:req.body.startingTime,
             endingTime:req.body.endingTime,
-            Therapist:req.body.Therapist
+            Therapist:therapid
         });
         
       newAvailability.save();

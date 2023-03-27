@@ -431,8 +431,54 @@ const adminActiveTherapy = {
         },
     },
 };
+const createAvailability = {
+    tags: ["THERAPIST"],
+    description: "create availability",
+    requestBody: {
+        content: {
+            "multipart/form-data": {
+                schema: {
+                    type: "object",
+                    properties: {
+                        days: {
+                            type: "String",
+                            example: "20-03-2023",
+                        },
+                        startingTime: {
+                            type: "string",
+                            example: "T7:00PM",
+                        },
+                        endingTime: {
+                            type: "String",
+                            example: "T8:00AM",
+                        },
+                        Therapist: {
+                            type: "String",
+                            example: "JAMES"
+                        },
+                    },
+                },
+            },
+        },
+    },
+    responses: {
+        200: {
+            description: "OK",
 
-
+            content: {
+                "application/json": {
+                    Schema: {
+                        type: "object",
+                        example: {
+                            count: 0,
+                            user: [],
+                        },
+                    },
+                },
+            },
+        },
+    },
+}
 const GetAllUnActiveTherapy = {
     tags: ["ADMIN"],
     description: "this API it for getting all the users exits in database no need of log in!",
@@ -529,11 +575,10 @@ const TherapistRegDoc = {
     },
     "/api/therapist/getTherapy/{id}":{
         get:GetTherapy
-    },
-    "/api/therapist/Availability/create":{
-       post: createAvailability
-    },
-
+    }, 
+    "/api/therapist/createAvailability":{
+        post: createAvailability
+    }, 
 };
 
 export default TherapistRegDoc;

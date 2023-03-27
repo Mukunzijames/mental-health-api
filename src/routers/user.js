@@ -64,29 +64,52 @@ router.post("/register", async (req, res) => {
         return res.status(401).json(err)
     }
 });
-// router.post("/Appointment",async(req,res)=>{
-// try {
-//   const newAppointment= new Appointment ({
+ router.post("/Appointment",async(req,res)=>{
 
-//     AppointmentInfo,
-//     TherapistInfo,
-//     paymentInformation,
-//     confirmationInfo,
-//     appointmentStatus
-//   });
-//   const appointment = await Appointment.find({
-//     AppointmentInfo,
-//     TherapistInfo,
-//     paymentInformation,
-//     confirmationInfo,
-//     appointmentStatus
+  try {
+  
+    const availabilityId=userid;
+    const newAppointment= new Appointment({
+        name:req.body.name,
+        email:req.body.email,
+        phone:req.body.phone,
+        Date:req.body.date, 
+        time:req.body.time,
+        reason:req.body.reason,
+        specialty:req.body.specialty,
+        availability:availabilityId.message,
+        paymentMethod:req.body.paymentMethod,
+        paymentAmount:req.body.paymentAmount,
+        confirmationInfo:req.body.confirmationInfo,
+        appointmentStatus:req.body.appointmentStatus
+});
+const appointment= await Appointment.find({
+  name:req.body.name,
+  email:req.body.email,
+  phone:req.body.phone,
+  Date:req.body.date, 
+  time:req.body.time,
+  reason:req.body.reason,
+  specialty:req.body.specialty,
+  availability:availabilityId.message,
+  paymentMethod:req.body.paymentMethod,
+  paymentAmount:req.body.paymentAmount,
+  confirmationInfo:req.body.confirmationInfo,
+  appointmentStatus:req.body.appointmentStatus
+});
+    newAppointment.save();
+    return res.status(200).json({message:newAppointment})
 
-//   });
-//   newAppointment.save();
-//   return res.status(201).json({message:"newAppointment"})
-// } catch (error) {
-//   return res.status(500).json(error)
-// }
-// });
+  } catch (error) {
+    return res.status(500).json('error')
+  }
+ });
+ router.patch("/Appointment",async(req,res)=>{
+  try {
+    
+  } catch (error) {
+    
+  }
+ })
 
 export default router;
