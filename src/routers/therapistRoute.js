@@ -1,7 +1,6 @@
 import express from "express";
 import Therapist from "../Models/auth/therapist";
 import middlewares from "../middleware/middlewares";
-<<<<<<< HEAD
 import User from "../Models/auth/user";
 import bcrypt from "bcrypt";
 import multer from "multer";
@@ -10,24 +9,6 @@ import group from "../Models/groups";
 import { mail } from "../happer/email";
 const router = express.Router();
 const storage = multer.diskStorage({});
-=======
-import User from "../Models/auth/user"
-import bcrypt from "bcrypt"
-import multer from "multer"
-import cloudinary from "../happer/cloudinary"
-import group from "../Models/groups"
-import { mail } from "../happer/email";
-import Availability from "../Models/availability";
-
-const router = express.Router()
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "Document")
-    }, filename(req, file, cb) {
-        cb(null, file.originalname)
-    },
-});
->>>>>>> 42a3b5c (changes)
 
 const upload = multer({ storage: storage });
 
