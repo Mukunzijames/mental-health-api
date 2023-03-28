@@ -317,9 +317,9 @@ router.post('/Availability/create',middlewares.middlewareTherapist,async(req,res
         return res.status(500).json(error)
     }
 });
-router.delete("/Therapist/:id", async (req, res) => {
+router.delete("/Therapist/:id",middlewares.middleware,async (req, res) => {
     try {
-      const therapist = await Therapist.findByIdAndDelete(req.params.id);
+      const therapist = await Therapist.findByIdAndDelete(req.userData.id);
   
       if (!therapist) {
         return res.status(404).json({ message: "Therapist not found" });

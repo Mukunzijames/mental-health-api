@@ -88,9 +88,9 @@ const appointment = await newAppointment.save();
   }
  });
  
- router.delete("/user/:id", async (req, res) => {
+ router.delete("/user/:id",middlewares.middlewareAdmin, async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.userData.id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
