@@ -1,68 +1,43 @@
 import mongoose from "mongoose";
 
  const appointmentSchema= new mongoose.Schema({
-        patient:{
-        name:{
+        patientId:{
+         type:mongoose.Schema.Types.ObjectId,
+        ref:"Therapist",
+        required:true
+        },
+       
+        emailUser:{
+         type:mongoose.Schema.Types.ObjectId,
+        ref:"User",
+        required:true
+        },
+       therapyType:{
+         type: String,
+         required:true
+       },
+       SessionPackage:{
+         type:String,
+         required:false
+       },
+        appointmentDate:{
          type:String,
          required:true
         },
-        email:{
-         type:String,
-         required:true
-        },
-        phone:{
-         type:String,
-         equired:true
-        },
-        },
-        AppointmentInfo:{
-        Date:{
-         type:String,
-         required:true
-        },
-        time:{
+        SessiontimeStart:{
         type:String,
         required:true
         },
+        SessiontimeEnd:{
+         type:String,
+         required:true
+         },
         reason:{
         type:String,
         required:true
         },
-
-        },
-        TherapistInfo:{
-        Name:{  
-        type:String,
-        required:true
-        },
-        specialty:{
-        type:String,
-        required:true
-        },
-        availability:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'user',
-        required:true
-        },
-        },
-        paymentInformation:{
-        paymentMethod:{
-        type:String,
-        required:true
-        },
-        paymentAmount:{
-        type:String,
-        required:true
-        },
-        confirmationInfo:{
-        type:String,
-        required:true
-        },
-        },
-        appointmentStatus:{
-        type:String,
-        required:true
-        },
+      
+        
  },{
     timestamps:true
  });

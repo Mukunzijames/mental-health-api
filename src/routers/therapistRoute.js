@@ -97,10 +97,7 @@ router.get("/all", async (req, res) => {
   }
 });
 
-router.post(
-  "/group/create",
-  middlewares.middlewareTherapist,
-  async (req, res) => {
+router.post("/group/create",middlewares.middlewareTherapist,async (req, res) => {
     try {
       const userId = req.userData.therapiID;
 
@@ -320,5 +317,29 @@ router.post('/Availability/create',middlewares.middlewareTherapist,async(req,res
         return res.status(500).json(error)
     }
 });
+router.delete("/Therapist/:id", async (req, res) => {
+    try {
+      const therapist = await Therapist.findByIdAndDelete(req.params.id);
+  
+      if (!therapist) {
+        return res.status(404).json({ message: "Therapist not found" });
+      }
+  
+      return res.status(200).json({ message: "Therapist deleted successfully" });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json(error);
+    }
+});
+router.get("/search",async(req,res) => {
+
+  const query= req.query.Therapist
+  const search= await Therapist.find({therapist_type:query})
+try {
+  return res.status(200).json(search)   
+  } catch (error) {
+    return res.status(500).json(error)
+  }
+})
 
 export default router;

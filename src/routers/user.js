@@ -64,52 +64,43 @@ router.post("/register", async (req, res) => {
         return res.status(401).json(err)
     }
 });
- router.post("/Appointment",async(req,res)=>{
-
+ router.post("/Appointment",middlewares.middleware,async(req,res)=>{
+  const userId = req.userData.user_id;
+  const email=userId.email
   try {
-  
-    const availabilityId=userid;
     const newAppointment= new Appointment({
-        name:req.body.name,
-        email:req.body.email,
-        phone:req.body.phone,
-        Date:req.body.date, 
-        time:req.body.time,
+        patientId:userId,
+        emailUser:email,
+        therapyType:req.body.therapyType,
+        SessionPackage:req.body.SessionPackage, 
+        appointmentDate:req.body.appointmentDate,
+        SessiontimeStart:req.body.SessiontimeStart,
+        SessiontimeEnd:req.body.SessiontimeEnd,
         reason:req.body.reason,
-        specialty:req.body.specialty,
-        availability:availabilityId.message,
-        paymentMethod:req.body.paymentMethod,
-        paymentAmount:req.body.paymentAmount,
-        confirmationInfo:req.body.confirmationInfo,
-        appointmentStatus:req.body.appointmentStatus
+        
 });
-const appointment= await Appointment.find({
-  name:req.body.name,
-  email:req.body.email,
-  phone:req.body.phone,
-  Date:req.body.date, 
-  time:req.body.time,
-  reason:req.body.reason,
-  specialty:req.body.specialty,
-  availability:availabilityId.message,
-  paymentMethod:req.body.paymentMethod,
-  paymentAmount:req.body.paymentAmount,
-  confirmationInfo:req.body.confirmationInfo,
-  appointmentStatus:req.body.appointmentStatus
-});
-    newAppointment.save();
-    return res.status(200).json({message:newAppointment})
+const appointment = await newAppointment.save();
+    
+    return res.status(200).json(appointment)
 
   } catch (error) {
     return res.status(500).json('error')
   }
  });
- router.patch("/Appointment",async(req,res)=>{
+ 
+ router.delete("/user/:id", async (req, res) => {
   try {
-    
-  } catch (error) {
-    
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    await User.findByIdAndDelete(req.params.id);
+    return res.status(200).json({ message: "User deleted successfully" });
+  } catch (err) {
+    return res.status(500).json(err);
   }
- })
+});
+
+ 
 
 export default router;

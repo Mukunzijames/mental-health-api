@@ -442,7 +442,7 @@ const createAvailability = {
                     properties: {
                         days: {
                             type: "String",
-                            example: "20-03-2023",
+                            example: "monday",
                         },
                         startingTime: {
                             type: "string",
@@ -537,6 +537,36 @@ const GetTherapy = {
     },
 
 };
+const deleteTherapy= {
+    tags: ["THERAPIST"],
+    description: " delete therapist by Id",
+    description: "This Api generated for deleting the therapist",
+    
+    parameters: [
+        {
+            name: "id",
+            in: "path",
+            description: "id of user",
+            type: "String",
+            example: "6405d582854946abade82969"
+        }
+    ],
+    responses: {
+        200: {
+            description: "OK",
+            content: {
+                "application/json": {
+                    type: 'object',
+                    example: {
+                        status: "success",
+                        data: []
+                    },
+                },
+            },
+        },
+    },
+
+};
 
 const TherapistRegDoc = {
     "/api/therapist/register": {
@@ -579,6 +609,10 @@ const TherapistRegDoc = {
     "/api/therapist/createAvailability":{
         post: createAvailability
     }, 
+    "/api/therapist/Therapist/{id}":{
+        delete: deleteTherapy
+    }, 
+
 };
 
 export default TherapistRegDoc;

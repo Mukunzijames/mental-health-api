@@ -85,65 +85,53 @@ const createAppointment = {
     description: "create Appointment",
     requestBody: {
         content: {
-            "application/json": {
+            "multipart/form-data": {
                 schema: {
                     type: "object",
                     properties: {
-                        Names: {
+                        therapyType: {
                             type: "String",
-                            example: "paccy"
+                            example: "----",
+                            enum:[
+                                "Psychologist",
+                                "Psychiatrist",
+                                "Psychoanalyst",
+                                "Psychiatric nurse",
+                                "Psychotherapist",
+                                "Mental health counselor",
+                                "Family and marriage counselor",
+                                "Addiction counselor"
+                            ]
                         },
-                        email: {
+                        SessionPackage: {
                             type: "String",
-                            example: "paccy@gmail.com"
+                            example: "",
+                            enum:[
+                                "weekly",
+                                "monthly",
+                                "year"
+                            ]
                         },
-                        password: {
+                        appointmentDate: {
                             type: "String",
                             example: "paccy"
                         },
                        
-                        phoneNumber: {
-                            type: "String",
-                            example: "+25078884884"
+                        SessiontimeStart: {
+                            type: "Date",
+                            
                         },
                         
-                        Date: {
-                            type: "String",
+                        SessiontimeEnd: {
+                            type: "Date",
                             example:"10-03-2023"
 
                         },
-                        time:{
-                            type:"String",
-                            example:"T07:30 PM"
-                        },
+                       
                         reason:{
                              type:"String",
                              example:"reason"
                         },
-                        specialty:{
-                            type:"String",
-                            example:"specialty"
-                        },
-                        availability:{
-                            type:"String",
-                            example:"availability"
-                        },
-                        paymentMethod:{
-                            type:"String",
-                            example:"card!momo"
-                        },
-                        paymentAmount:{
-                            type:"String",
-                            example:"money"
-                        },
-                        confirmationInfo:{
-                            type:"String",
-                            example:"receipt"
-                        },
-                        appointmentStatus:{
-                            type:"string",
-                            example:"status"
-                        }
                         
                     },
                 },
@@ -168,7 +156,36 @@ const createAppointment = {
         },
     },
 }
+const deleteUser= {
+    tags: ["USER"],
+    description: " delete user by Id",
+    description: "This Api generated for deleting the user",
+    
+    parameters: [
+        {
+            name: "id",
+            in: "path",
+            description: "id of user",
+            type: "String",
+            example: "6405d582854946abade82969"
+        }
+    ],
+    responses: {
+        200: {
+            description: "OK",
+            content: {
+                "application/json": {
+                    type: 'object',
+                    example: {
+                        status: "success",
+                        data: []
+                    },
+                },
+            },
+        },
+    },
 
+};
 
 
 
@@ -181,7 +198,10 @@ const userRegDoc = {
     },
      "/api/user/Appointment":{
          post: createAppointment
- }
+    },
+    "/api/user/user/{id}":{
+        delete: deleteUser
+    }
 
 };
 
