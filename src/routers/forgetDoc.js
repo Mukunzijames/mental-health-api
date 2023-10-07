@@ -37,7 +37,6 @@ const forgetDOc = {
     },
 }
 
-
 const updateUserById = {
     tags:['AUTHENTICATION'],
     description:"This API is for Updating a user by id, this task is for owner and admin only",

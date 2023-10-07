@@ -24,6 +24,10 @@ const options = {
         url: "https://mental-health-vd45.onrender.com/",
         description: "Development server",
       },
+      {
+        url: "https://mashami-mental-health.onrender.com/",
+        description: "Development server",
+      }
     ],
     tags: [
       { name: "THERAPIST", description: "Therapist Routes" },

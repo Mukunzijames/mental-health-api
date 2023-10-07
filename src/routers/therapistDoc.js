@@ -537,26 +537,30 @@ const GetTherapy = {
     },
 
 };
-const deleteTherapy= {
-    tags: ["THERAPIST"],
-    description: " delete therapist by Id",
-    description: "This Api generated for deleting the therapist",
-    
+const DeleteTherapy = {
+   
+    tags: ['THERAPIST'],
+    description: "Delete Therapy by id",
+    description: "this API is for deleting a Therapy by the admin only",
+    security:[{
+        token :[]
+    }],
     parameters: [
         {
             name: "id",
             in: "path",
-            description: "id of user",
-            type: "String",
-            example: "6405d582854946abade82969"
+            description: "id of Therapy",
+            type: "string",
+            example: "6421bfd213747347e5cc2a5b"
         }
     ],
+ 
     responses: {
         200: {
             description: "OK",
             content: {
                 "application/json": {
-                    type: 'object',
+                    type: "object",
                     example: {
                         status: "success",
                         data: []
@@ -565,7 +569,6 @@ const deleteTherapy= {
             },
         },
     },
-
 };
 
 const TherapistRegDoc = {
@@ -609,9 +612,9 @@ const TherapistRegDoc = {
     "/api/therapist/createAvailability":{
         post: createAvailability
     }, 
-    "/api/therapist/Therapist/{id}":{
-        delete: deleteTherapy
-    }, 
+    "/api/therapist/delete/{id}":{
+        delete:DeleteTherapy
+    },
 
 };
 
